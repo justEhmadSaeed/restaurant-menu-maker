@@ -1,17 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Typical from 'react-typical';
-const HomePage = () => {
+const HomePage = ({ user }) => {
 	return (
 		<div className='title'>
 			<div id='header-image'>
 				<div id='title-app-bar'>
-					<p>
-						<Link to='/signin'>SignIn</Link>
-					</p>
-					<p>
-						<Link to='/signin'>Register</Link>
-					</p>
+					{user.uid ? (
+						<p>
+							<Link to='/dashboard'>My Account</Link>
+						</p>
+					) : (
+						<>
+							<p>
+								<Link to='/signin'>Sign In</Link>
+							</p>
+							<p>
+								<Link to='/signin'>Register</Link>
+							</p>
+						</>
+					)}
 				</div>
 				<Typical
 					steps={[
