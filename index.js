@@ -1,12 +1,19 @@
 'use strict'
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const app = express();
 // Routes
-const routes = require('./routes/menu');
+const menuRouters = require('./src/routes/menu');
+const restRouters = require('./src/routes/restaurant');
 app.use(express.json());
 app.use(cors());
-app.use('/api', routes);
+app.use('/api/menu', menuRouters);
+app.use('/api/rest', restRouters);
+
+const port = process.env.PORT || 8000;
+
+app.listen(port, () =>
+	console.log(`Server is listening to PORT ${port}`)
+);
