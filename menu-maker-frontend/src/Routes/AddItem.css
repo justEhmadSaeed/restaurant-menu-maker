@@ -1,0 +1,41 @@
+#add-item {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+#add-item > .title-app-bar {
+	background-color: teal;
+	color: white;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0;
+}
+#add-item h1{
+	font-size: 30px;
+}
+.card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-self: center;
+	width: 50%;
+	transition: 0.3s;
+	border-radius: 20px;
+	opacity: 0.95;
+	background-color: white;
+	margin-top: 30px;
+	padding: 50px;
+	box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.card:hover {
+	box-shadow: 2px 8px 16px 0 rgba(0, 0, 0, 0.4);
+}
+.ingredients{
+	display: flex;
+	flex-direction: column;
+}
+.ingredient-item{
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}

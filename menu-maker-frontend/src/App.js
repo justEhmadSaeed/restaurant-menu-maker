@@ -7,7 +7,7 @@ import firebase from './firebase/firebase';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import './App.css';
 import LoadingScreen from './components/LoadingScreen';
-import ModifyMenu from './Routes/ModifyMenu';
+import AddItem from './Routes/AddItem';
 
 
 const App = () => {
@@ -48,8 +48,8 @@ const App = () => {
 			<Route exact path='/dashboard'>
 				<Dashboard user={user} />
 			</Route>
-			<Route exact path='/modify'>
-				<ModifyMenu user={user} />
+			<Route exact path='/add-item'>
+				<AddItem user={user} />
 			</Route>
 			<Route path='/'>
 				<HomePage user={user} />

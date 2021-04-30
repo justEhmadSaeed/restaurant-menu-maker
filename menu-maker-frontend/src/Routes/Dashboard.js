@@ -76,10 +76,10 @@ const Dashboard = ({ user }) => {
 					</Button>
 				</div>
 			</div>
-			<div className='create-menu'>
-				<Link to=''>
+			<div className='button-class'>
+				<Link to='/add-item'>
 					<Button variant='contained' color='primary'>
-						+ Modify Menu
+						+ Add Item
 					</Button>
 				</Link>
 			</div>
