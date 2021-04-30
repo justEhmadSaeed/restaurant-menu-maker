@@ -7,6 +7,9 @@ import firebase from './firebase/firebase';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import './App.css';
 import LoadingScreen from './components/LoadingScreen';
+import ModifyMenu from './Routes/ModifyMenu';
+
+
 const App = () => {
 	const [user, setUser] = useState({});
 	const [loading, setLoading] = useState(true);
@@ -43,7 +46,10 @@ const App = () => {
 	) : (
 		<Switch>
 			<Route exact path='/dashboard'>
-				<Dashboard />
+				<Dashboard user={user} />
+			</Route>
+			<Route exact path='/modify'>
+				<ModifyMenu user={user} />
 			</Route>
 			<Route path='/'>
 				<HomePage user={user} />

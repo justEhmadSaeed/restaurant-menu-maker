@@ -1,9 +1,9 @@
+import React from 'react';
 import { Icon } from '@material-ui/core';
 import { ExitToApp, Person } from '@material-ui/icons';
-import React from 'react';
 import { Link } from 'react-router-dom';
-import Typical from 'react-typical';
 import firebase from '../firebase/firebase';
+import Typical from 'react-typical';
 
 const HomePage = ({ user }) => {
 	return (
@@ -15,7 +15,7 @@ const HomePage = ({ user }) => {
 							<Icon>
 								<Person />
 							</Icon>
-							<Link to='/dashboard'>My Account</Link>
+							<Link to='/dashboard'>{user.name}</Link>
 						</button>
 						<button
 							onClick={() => firebase.auth().signOut()}
