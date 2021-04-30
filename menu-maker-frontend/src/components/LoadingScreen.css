@@ -1,7 +1,12 @@
-.loading{
-    margin-top: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.loading {
+	margin-top: 150px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.loading > h1 {
+	font-size: 40px;
+	color: teal;
+    text-align: center;
 }
