@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "concurrently \"nodemon index.js\" \"cd menu-maker-frontend && npm start\"",
+    "start-all": "concurrently \"nodemon index.js\" \"cd menu-maker-frontend && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
