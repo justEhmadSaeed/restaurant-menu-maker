@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from '@material-ui/core';
-import { Delete, Edit } from '@material-ui/icons';
+import { Delete } from '@material-ui/icons';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -41,9 +41,32 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function MenuTable({ user }) {
+export default function MenuTable({ user, menuItems, setMenuItems }) {
 	const classes = useStyles();
-	const [rows, setRows] = useState([{ name: 'Demo', price: 30 }]);
+
+	const deleteItem = async (index) => {
+		const result = await fetch(
+			'http://localhost:8000/api/menu/delete',
+			{
+				method: 'DELETE',
+				body: JSON.stringify({
+					uid: user.uid,
+					item: Object.keys(menuItems)[index],
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		const data = await result.json();
+		if (!data.error) {
+			const temp = { ...menuItems };
+			delete temp[Object.keys(menuItems)[index]];
+			console.log(temp);
+			setMenuItems(temp);
+		}
+	};
+
 	return (
 		<TableContainer className={classes.paper} component={Paper}>
 			<Table className={classes.table} aria-label='customized table'>
@@ -51,10 +74,10 @@ export default function MenuTable({ user }) {
 					<TableRow>
 						<StyledTableCell>Item Name</StyledTableCell>
 						<StyledTableCell align='center' padding='none'>
-							Price
+							Price ($)
 						</StyledTableCell>
 						<StyledTableCell align='center' padding='none'>
-							Edit
+							Ingredients
 						</StyledTableCell>
 						<StyledTableCell align='center' padding='none'>
 							Delete
@@ -62,21 +85,19 @@ export default function MenuTable({ user }) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map((row) => (
-						<StyledTableRow key={row.name}>
+					{Object.values(menuItems).map((item, key) => (
+						<StyledTableRow key={key}>
 							<StyledTableCell component='th' scope='row'>
-								{row.name}
+								{item.name}
 							</StyledTableCell>
 							<StyledTableCell align='center' padding='none'>
-								{row.price}
+								{item.price}
 							</StyledTableCell>
 							<StyledTableCell align='center' padding='none'>
-								<IconButton>
-									<Edit />
-								</IconButton>
+								{item.ingredients.length}
 							</StyledTableCell>
 							<StyledTableCell align='center' padding='none'>
-								<IconButton>
+								<IconButton onClick={() => deleteItem(key)}>
 									<Delete />
 								</IconButton>
 							</StyledTableCell>

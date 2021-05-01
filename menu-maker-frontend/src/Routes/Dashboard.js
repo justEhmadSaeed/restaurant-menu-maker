@@ -11,10 +11,10 @@ const Dashboard = ({ user }) => {
 	const [title, setTitle] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
+	const [menuItems, setMenuItems] = useState([]);
 	const [isChanged, setIsChanged] = useState(false);
 	const [image, setImage] = useState(null);
 	const [loading, setLoading] = useState(true);
-
 	const onRestaurantInfoSave = async () => {
 		const result = await fetch('http://localhost:8000/api/rest/set', {
 			method: 'POST',
@@ -52,7 +52,7 @@ const Dashboard = ({ user }) => {
 						.ref(`images/${user.uid}`)
 						.getDownloadURL()
 						.then((url) => {
-							firebase.database().ref(`users/${user.uid}`).set({
+							firebase.database().ref(`users/${user.uid}`).update({
 								image: url,
 							});
 							setImage(url);
@@ -61,7 +61,7 @@ const Dashboard = ({ user }) => {
 			);
 		}
 	};
-
+	// Fetch Data from Backend on Page Load
 	useEffect(() => {
 		const fetchRestInfo = async () => {
 			const result = await fetch(
@@ -83,6 +83,7 @@ const Dashboard = ({ user }) => {
 				setPhone(data.contactInfo['phone']);
 			}
 			if (data['image']) setImage(data['image']);
+			if (data['menu']) setMenuItems(data['menu']);
 			setLoading(false);
 		};
 		fetchRestInfo();
@@ -187,7 +188,11 @@ const Dashboard = ({ user }) => {
 				</Link>
 			</div>
 			<div id='menu-table'>
-				<MenuTable user={user} />
+				<MenuTable
+					user={user}
+					menuItems={menuItems}
+					setMenuItems={setMenuItems}
+				/>
 			</div>
 		</div>
 	);

@@ -31,13 +31,28 @@ const AddItem = ({ user }) => {
 		setIngredientsArray(temp);
 	};
 	// Send Data to backend
-	const onSubmitItem = () => {
+	const onSubmitItem = async () => {
 		setLoading('start');
+		const result = await fetch('http://localhost:8000/api/menu/set', {
+			method: 'POST',
+			body: JSON.stringify({
+				uid: user.uid,
+				name,
+				price,
+				ingredients: ingredientsArray,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		const data = await result.json();
+		if (!data.error) setLoading('redirect');
+		else setLoading('stop');
 	};
 
 	if (loading === 'start') return <LoadingScreen />;
 	if (loading === 'redirect')
-		return <Redirect push path='/dashboard' />;
+		return <Redirect push to='/dashboard' />;
 
 	return (
 		<div id='add-item'>
@@ -106,7 +121,11 @@ const AddItem = ({ user }) => {
 			<div className='button-class'>
 				<Button
 					variant='contained'
-					disabled={name.length === 0 || price === 0}
+					disabled={
+						name.length === 0 ||
+						price === 0 ||
+						ingredientsArray.length === 0
+					}
 					onClick={onSubmitItem}
 				>
 					Add Item

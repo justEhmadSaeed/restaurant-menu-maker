@@ -13,7 +13,7 @@ router.post('/get', (req, res) => {
 router.post('/set', (req, res) => {
 	const { uid, name, phone, email } = req.body;
 	if (uid && name && phone && email)
-		database.ref('users/' + uid).set(
+		database.ref('users/' + uid).update(
 			{
 				restaurantName: name,
 				contactInfo: {
