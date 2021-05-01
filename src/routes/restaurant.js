@@ -11,19 +11,22 @@ router.post('/get', (req, res) => {
 });
 // Add Restaurant Name & Contact Information
 router.post('/set', (req, res) => {
-	database.ref('users/' + req.body.uid).set(
-		{
-			restaurantName: req.body.name,
-			contactInfo: {
-				phone: req.body.phone,
-				email: req.body.email,
+	const { uid, name, phone, email } = req.body;
+	if (uid && name && phone && email)
+		database.ref('users/' + uid).set(
+			{
+				restaurantName: name,
+				contactInfo: {
+					phone: phone,
+					email: email,
+				},
 			},
-		},
-		(error) => {
-			if (error) return res.status(400).json(error);
-			res.status(200).json({ message: 'Success' });
-		}
-	);
+			(error) => {
+				if (error) return res.status(400).json(error);
+				res.status(200).json({ message: 'Success' });
+			}
+		);
+	else res.status(400).json({ error: 'Required Fields are missing' });
 });
 
 module.exports = router;

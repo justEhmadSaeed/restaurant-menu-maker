@@ -15,12 +15,11 @@ const AddItem = ({ user }) => {
 	const [loading, setLoading] = useState('stop');
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState(0);
-	const [image, setImage] = useState(null);
 	const [ingredientsArray, setIngredientsArray] = useState([]);
 	const [ingredientName, setingredientName] = useState('');
 
 	const addIngredient = () => {
-		if (ingredientName.length > 0) {
+		if (ingredientName.length > 0 && ingredientsArray.length < 5) {
 			const temp = [...ingredientsArray];
 			temp.push(ingredientName);
 			setIngredientsArray(temp);
@@ -75,12 +74,6 @@ const AddItem = ({ user }) => {
 							),
 						}}
 					/>
-					<Input
-						type='file'
-						onChange={(event) => {
-							setImage(event.target.files[0]);
-						}}
-					/>
 				</div>
 				<h2>Ingredients</h2>
 				<div className='add-ingredient'>
@@ -113,9 +106,7 @@ const AddItem = ({ user }) => {
 			<div className='button-class'>
 				<Button
 					variant='contained'
-					disabled={
-						name.length === 0 || price === 0 || image === null
-					}
+					disabled={name.length === 0 || price === 0}
 					onClick={onSubmitItem}
 				>
 					Add Item

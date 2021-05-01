@@ -2,7 +2,6 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: stretch;
 }
 #dashboard > .title-app-bar {
 	background-color: teal;
@@ -20,6 +19,14 @@
 	display: flex;
 	justify-content: center;
 	align-self: flex-end;
+}
+.center-align{
+	align-self: center;
+	margin: 10px;
+}
+.image{
+	width: 400px;
+	height: auto;
 }
 .button-class {
 	display: flex;
@@ -60,10 +67,11 @@
 	transition: all 0.5s ease;
 }
 #menu-table {
-	padding: 0% 5%;
+	padding: 5%;
+	padding-top: 0%;
 }
 @media (max-width: 768px) {
 	#menu-table {
-		padding: 0%;
+		padding:5% 0%;
 	}
 }

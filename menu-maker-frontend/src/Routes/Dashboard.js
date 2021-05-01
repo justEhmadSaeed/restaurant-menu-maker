@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon } from '@material-ui/core';
+import { Button, Icon, Input, TextField } from '@material-ui/core';
 import { ExitToApp, Home } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/firebase';
@@ -9,27 +9,85 @@ import MenuTable from '../components/MenuTable';
 
 const Dashboard = ({ user }) => {
 	const [title, setTitle] = useState('');
+	const [email, setEmail] = useState('');
+	const [phone, setPhone] = useState('');
 	const [isChanged, setIsChanged] = useState(false);
+	const [image, setImage] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const userDB = firebase.database().ref('users/' + user.uid);
 
-	const onTitleSave = () => {
-		userDB.set({
-			restaurantName: title,
+	const onRestaurantInfoSave = async () => {
+		const result = await fetch('http://localhost:8000/api/rest/set', {
+			method: 'POST',
+			body: JSON.stringify({
+				uid: user.uid,
+				name: title,
+				email,
+				phone,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		});
-		setIsChanged(false);
+
+		if (!result.error) setIsChanged(false);
 	};
+
+	const onImageUpload = (event) => {
+		const img = event.target.files[0];
+		if (img) {
+			const uploadImage = firebase
+				.storage()
+				.ref(`images/${user.uid}`)
+				.put(img);
+
+			uploadImage.on(
+				'state-changed',
+				(snapshot) => {},
+				(error) => {
+					console.log(error);
+				},
+				() => {
+					firebase
+						.storage()
+						.ref(`images/${user.uid}`)
+						.getDownloadURL()
+						.then((url) => {
+							firebase.database().ref(`users/${user.uid}`).set({
+								image: url,
+							});
+							setImage(url);
+						});
+				}
+			);
+		}
+	};
+
 	useEffect(() => {
-		firebase
-			.database()
-			.ref('users/' + user.uid)
-			.on('value', (snapshot) => {
-				const data = snapshot.val();
-				if (data) setTitle(data['restaurantName']);
-				console.log(data);
-				setLoading(false);
-			});
+		const fetchRestInfo = async () => {
+			const result = await fetch(
+				'http://localhost:8000/api/rest/get',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						uid: user.uid,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			const data = await result.json();
+			if (!data.error && data['restaurantName']) {
+				setTitle(data['restaurantName']);
+				setEmail(data.contactInfo['email']);
+				setPhone(data.contactInfo['phone']);
+			}
+			if (data['image']) setImage(data['image']);
+			setLoading(false);
+		};
+		fetchRestInfo();
 	}, [user.uid]);
+
 	if (loading) return <LoadingScreen />;
 	return (
 		<div id='dashboard'>
@@ -53,29 +111,74 @@ const Dashboard = ({ user }) => {
 					</button>
 				</div>
 			</div>
-			<div className='restaurant-name'>
-				<input
-					type='text'
-					className='input-text'
-					value={title}
-					onChange={(e) => {
-						setTitle(e.target.value);
-						setIsChanged(true);
-					}}
-					id='quiz-title'
-					placeholder='Restaurant Title'
-					autoComplete='off'
+			<TextField
+				type='text'
+				className='input-text center-align'
+				value={title}
+				variant='outlined'
+				margin='normal'
+				onChange={(e) => {
+					setTitle(e.target.value);
+					setIsChanged(true);
+				}}
+				label='Restaurant Name'
+				autoComplete='off'
+			/>
+			<TextField
+				type='email'
+				className='input-text center-align'
+				value={email}
+				variant='outlined'
+				margin='normal'
+				onChange={(e) => {
+					setEmail(e.target.value);
+					setIsChanged(true);
+				}}
+				label='Email Address'
+				autoComplete='off'
+			/>
+			<TextField
+				type='text'
+				className='input-text center-align'
+				value={phone}
+				variant='outlined'
+				margin='normal'
+				onChange={(e) => {
+					setPhone(e.target.value);
+					setIsChanged(true);
+				}}
+				label='Phone No.'
+				autoComplete='off'
+			/>
+			<Button
+				disabled={
+					!isChanged ||
+					title.length === 0 ||
+					email.length === 0 ||
+					phone.length === 0
+				}
+				onClick={onRestaurantInfoSave}
+				variant='contained'
+				className='center-align'
+			>
+				Save
+			</Button>
+			<div className='center-align'>
+				<Input
+					className='center-align'
+					type='file'
+					onChange={onImageUpload}
 				/>
-				<div>
-					<Button
-						disabled={!isChanged || title.length === 0}
-						onClick={onTitleSave}
-						variant='contained'
-					>
-						Save
-					</Button>
-				</div>
 			</div>
+			{image ? (
+				<img
+					className='image center-align'
+					src={image}
+					alt='restaurant-image'
+				/>
+			) : (
+				<></>
+			)}
 			<div className='button-class'>
 				<Link to='/add-item'>
 					<Button variant='contained' color='primary'>
