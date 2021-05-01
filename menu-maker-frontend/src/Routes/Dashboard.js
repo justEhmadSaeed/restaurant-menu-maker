@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Icon, Input, TextField } from '@material-ui/core';
-import { ExitToApp, Home } from '@material-ui/icons';
+import { ExitToApp, Home, Web } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/firebase';
 import './Dashboard.css';
@@ -8,13 +8,15 @@ import LoadingScreen from '../components/LoadingScreen';
 import MenuTable from '../components/MenuTable';
 
 const Dashboard = ({ user }) => {
+	// States
 	const [title, setTitle] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
+	const [image, setImage] = useState(null);
 	const [menuItems, setMenuItems] = useState([]);
 	const [isChanged, setIsChanged] = useState(false);
-	const [image, setImage] = useState(null);
 	const [loading, setLoading] = useState(true);
+
 	const onRestaurantInfoSave = async () => {
 		const result = await fetch('http://localhost:8000/api/rest/set', {
 			method: 'POST',
@@ -31,7 +33,7 @@ const Dashboard = ({ user }) => {
 
 		if (!result.error) setIsChanged(false);
 	};
-
+	// Upload Image to the firebase storage and save its URL in database
 	const onImageUpload = (event) => {
 		const img = event.target.files[0];
 		if (img) {
@@ -93,13 +95,21 @@ const Dashboard = ({ user }) => {
 	return (
 		<div id='dashboard'>
 			<div className='title-app-bar'>
-				<h1>Dashboard</h1>
+				<div>
+					<h1>Dashboard</h1>
+				</div>
 				<div className='appbar-buttons'>
 					<button className='text-button'>
 						<Icon>
 							<Home />
 						</Icon>
 						<Link to='/'>Home</Link>
+					</button>
+					<button className='text-button'>
+						<Icon>
+							<Web />
+						</Icon>
+						<Link to='/view'>View Restaurant</Link>
 					</button>
 					<button
 						onClick={() => firebase.auth().signOut()}
@@ -175,7 +185,7 @@ const Dashboard = ({ user }) => {
 				<img
 					className='image center-align'
 					src={image}
-					alt='restaurant-image'
+					alt='restaurant'
 				/>
 			) : (
 				<></>

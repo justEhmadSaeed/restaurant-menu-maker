@@ -1,7 +1,6 @@
 import {
 	Button,
 	IconButton,
-	Input,
 	InputAdornment,
 	TextField,
 } from '@material-ui/core';

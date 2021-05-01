@@ -28,10 +28,6 @@ const StyledTableRow = withStyles((theme) => ({
 	},
 }))(TableRow);
 
-function createData({ name, email, score }) {
-	return { name, email, score };
-}
-
 const useStyles = makeStyles({
 	table: {
 		minWidth: 500,

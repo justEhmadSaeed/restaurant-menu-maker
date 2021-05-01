@@ -8,7 +8,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import './App.css';
 import LoadingScreen from './components/LoadingScreen';
 import AddItem from './Routes/AddItem';
-
+import ViewRestaurant from './Routes/ViewRestaurant';
 
 const App = () => {
 	const [user, setUser] = useState({});
@@ -50,6 +50,9 @@ const App = () => {
 			</Route>
 			<Route exact path='/add-item'>
 				<AddItem user={user} />
+			</Route>
+			<Route exact path='/view'>
+				<ViewRestaurant user={user} />
 			</Route>
 			<Route path='/'>
 				<HomePage user={user} />

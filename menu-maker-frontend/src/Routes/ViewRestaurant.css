@@ -1,0 +1,74 @@
+.view-restaurant {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+#restaurant-image {
+	align-self: center;
+	width: 90%;
+	box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+}
+.view-restaurant h1 {
+	color: teal;
+	text-transform: uppercase;
+	font-size: 40px;
+	text-align: center;
+	padding: 20px;
+	box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.view-restaurant h1:hover {
+	box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.4);
+}
+.view-restaurant h2 {
+	color: teal;
+	padding: 20px;
+	text-align: center;
+	text-transform: uppercase;
+}
+#menu-items {
+	margin-bottom: 20px;
+}
+.menu-item {
+	background: teal;
+	color: white;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 10px;
+}
+.item-title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.menu-item h2,
+h3,
+h4 {
+	color: white;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+.menu-item ul {
+	margin: 0%;
+	display: flex;
+	justify-content: space-evenly;
+}
+#contact-information {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	padding-bottom: 50px;
+}
+#contact-information > div {
+	display: flex;
+}
+#contact-information > div > span{
+	padding: 0 10px;
+}
+@media (max-width: 768px) {
+	#restaurant-image {
+		width: 100%;
+		border-radius: 0;
+	}
+}

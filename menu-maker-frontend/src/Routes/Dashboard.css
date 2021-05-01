@@ -6,12 +6,12 @@
 #dashboard > .title-app-bar {
 	background-color: teal;
 	color: white;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
 	margin: 0;
 }
-#dashboard > .title-app-bar > h1 {
-	/* margin: 0; */
+#dashboard > .title-app-bar h1 {
+	margin: 0;
+	text-align: start;
 	font-size: 30px;
 	text-transform: uppercase;
 }
